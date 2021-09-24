@@ -60,7 +60,7 @@ class JsonClient(Client):
 
     def create(self, book: Book) -> Book:
         id = uuid.uuid1()
-        book['isbn'] = id.int
+        book['isbn'] = str(id.int)
         self.cache[self.model_name].append(book)
         self._save()
         return book
@@ -126,7 +126,7 @@ class SQLiteClient(Client):
         conn = None
         try:
             if os.path.exists(db_file):
-                conn = sqlite3.connect(db_file)
+                conn = sqlite3.connect(db_file,check_same_thread=False)
             else:
                 print("Error! the file does not exist")
 
@@ -187,7 +187,7 @@ class SQLiteClient(Client):
                      book['publisher'], book['pages'], book['description'], book['website'])
         book_id = self._execute(sql, book_data).lastrowid
 
-        with book_id:
+        if book_id:
             book['isbn'] = book_id
             return book
 
@@ -231,7 +231,7 @@ class SQLiteClient(Client):
         sql = 'SELECT * FROM books'
 
         cur = self._execute(sql)
-
+        
         rows = cur.fetchall()
 
         data = []

@@ -4,6 +4,7 @@ from flask import Flask, render_template
 # Define the WSGI application object
 app = Flask(__name__)
 
+
 # Configurations
 app.config.from_object('config')
 
@@ -14,7 +15,11 @@ def not_found(error):
 
 @app.route("/")
 def welcome():
-    return "<h1>Welcome to the Alexandry API</h1>"
+    return render_template('home/home.html')
+
+@app.route("/book/<book_id>")
+def display_book(book_id):
+    return render_template('book/book.html')
 
 # modules
 from app.controllers import api
