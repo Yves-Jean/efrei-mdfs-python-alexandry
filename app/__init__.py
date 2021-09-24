@@ -13,9 +13,12 @@ def not_found(error):
     return render_template('404/404.html'), 404
 
 @app.route("/")
-def hello_world():
+def welcome():
     return "<h1>Welcome to the Alexandry API</h1>"
 
-# Import a module / component using its blueprint handler variable (mod_auth)
-# from app.book.book_controller import Book_controller as book_module
+# modules
+from app.controllers import api
+
+# Register blueprint(s)
+app.register_blueprint(api)
 
